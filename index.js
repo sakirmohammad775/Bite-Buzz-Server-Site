@@ -10,7 +10,7 @@ app.use(express.json())
 
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://<db_username>:<db_password>@cluster0.mfnurby.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.mfnurby.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -42,4 +42,3 @@ app.get('/',(req,res)=>{
 app.listen (port,()=>{
     console.log(`bite-buzz is formatting ${port}`)
 })
-// 3t9AoFywpODzu9oI
