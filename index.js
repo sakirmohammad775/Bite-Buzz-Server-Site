@@ -28,7 +28,8 @@ async function run() {
 
     const menuCollection = client.db("Bite-Buzz").collection('menu')
     const reviewCollection = client.db("Bite-Buzz").collection('reviews')
-
+    
+    //get data from server site
     app.get('/menu', async (req, res) => {
       const result = await menuCollection.find().toArray()
       res.send(result)
