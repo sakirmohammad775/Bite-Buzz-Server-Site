@@ -1,8 +1,8 @@
-const express=require('express')
-const app =express()
-const cors=require('cors')
+const express = require('express')
+const app = express()
+const cors = require('cors')
 require('dotenv').config()
-const port=process.env.PORT || 5000
+const port = process.env.PORT || 5000
 
 //middleware
 app.use(cors())
@@ -26,12 +26,17 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const menuCollection=client.db("Bite-Buzz").collection('menu')
-    app.get('/menu',async(req,res)=>{
-      const result=await menuCollection.find().toArray()
+    const menuCollection = client.db("Bite-Buzz").collection('menu')
+    const reviewCollection = client.db("Bite-Buzz").collection('reviews')
+
+    app.get('/menu', async (req, res) => {
+      const result = await menuCollection.find().toArray()
       res.send(result)
     })
-
+    app.get('/review', async (req, res) => {
+      const result = await reviewCollection.find().toArray()
+      res.send(result)
+    })
 
 
     // Send a ping to confirm a successful connection
@@ -44,9 +49,9 @@ async function run() {
 }
 run().catch(console.dir);
 
-app.get('/',(req,res)=>{
-    res.send('bite-buzz is formatting')
+app.get('/', (req, res) => {
+  res.send('bite-buzz is formatting')
 })
-app.listen (port,()=>{
-    console.log(`bite-buzz is formatting ${port}`)
+app.listen(port, () => {
+  console.log(`bite-buzz is formatting ${port}`)
 })
