@@ -28,7 +28,8 @@ async function run() {
 
     const menuCollection = client.db("Bite-Buzz").collection('menu')
     const reviewCollection = client.db("Bite-Buzz").collection('reviews')
-    
+    const cartCollection = client.db("Bite-Buzz").collection('carts')
+
     //get data from server site
     app.get('/menu', async (req, res) => {
       const result = await menuCollection.find().toArray()
@@ -38,7 +39,12 @@ async function run() {
       const result = await reviewCollection.find().toArray()
       res.send(result)
     })
-
+    //carts collection
+    app.post ('/carts',async(req,res)=>{
+      const cartItem=req.body
+      const result =await cartCollection.insertOne(cartItem)
+      res.send(result)
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
