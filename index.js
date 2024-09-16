@@ -52,7 +52,6 @@ async function run() {
       const result = await cartCollection.find(query).toArray();
       res.send(result);
       console.log(query)
-      console.log(result)
     });
 
 
