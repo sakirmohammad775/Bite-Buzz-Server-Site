@@ -38,11 +38,13 @@ async function run() {
       const user=req.body;
       const token=jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{
         expiresIn:'1h'})
-        res.send(token)
+        res.send({token}) //send as a object
+        console.log(token) //for test
     })
 
     //users related api
     app.get('/users', async (req, res) => {
+      console.log(req.headers)
       const result = await userCollection.find().toArray()
       res.send(result)
     })
