@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const jwt=require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const port = process.env.PORT || 5000
 
@@ -34,16 +34,32 @@ async function run() {
     const cartCollection = client.db("Bite-Buzz").collection('carts')
 
     //jwt related api
-    app.post('/jwt',async(req,res)=>{
-      const user=req.body;
-      const token=jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{
-        expiresIn:'1h'})
-        res.send({token}) //send as a object
-        console.log(token) //for test
+    app.post('/jwt', async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '1h'
+      })
+      res.send({ token }) //send as a object
+      console.log(token) //for test
     })
+    //middleWare
+    const verifyToken = (req, res, next) => {
+      console.log('inside verified token', req.headers)
+      if (!req.headers.authorization) {
+        return res.status(401).send({ message: 'forbidden access' })
+      }
+      const token = req.headers.authorization.split(' ')[1] //check authentication bearer [0] [1] format
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+          return res.status(401).send({ message: 'forbidden access' })
+        }
+        req.decoded = decoded;
+        next()
+      })
+}
 
     //users related api
-    app.get('/users', async (req, res) => {
+    app.get('/users', verifyToken, async (req, res) => {
       console.log(req.headers)
       const result = await userCollection.find().toArray()
       res.send(result)
