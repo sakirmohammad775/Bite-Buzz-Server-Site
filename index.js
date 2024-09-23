@@ -66,6 +66,20 @@ async function run() {
       res.send(result)
     })
 
+    app.get('users/admin/:email', async (req, res) => {
+      const email = req.params.email
+      if (email !== req.params.email) {
+        return res.status(403).send({ message: 'unauthorized access' })
+      }
+      const query={email:email}
+      const user=await userCollection.findOne(query)
+      let admin =false;
+      if(user){
+        admin =user?.role==='admin'
+      }
+      res.send({admin})
+    })
+
     app.post('/users', async (req, res) => {
       const user = req.body
       //insert email if user doesn't exists
