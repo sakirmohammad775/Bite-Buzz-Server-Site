@@ -44,19 +44,20 @@ async function run() {
     })
     //middleWare
     const verifyToken = (req, res, next) => {
-      console.log('inside verified token', req.headers)
+      console.log('inside verified token', req.headers.authorization)
       if (!req.headers.authorization) {
         return res.status(401).send({ message: 'forbidden access' })
       }
       const token = req.headers.authorization.split(' ')[1] //check authentication bearer [0] [1] format
-      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if (err) {
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
+        if (error) {
           return res.status(401).send({ message: 'forbidden access' })
         }
         req.decoded = decoded;
         next()
       })
-}
+
+    }
 
     //users related api
     app.get('/users', verifyToken, async (req, res) => {
