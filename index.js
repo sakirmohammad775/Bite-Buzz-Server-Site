@@ -44,7 +44,7 @@ async function run() {
     })
     //middleWare
     const verifyToken = (req, res, next) => {
-      console.log('inside verified token', req.headers.authorization)
+      // console.log('inside verified token', req.headers.authorization)
       if (!req.headers.authorization) {
         return res.status(401).send({ message: 'unauthorized access' })
       }
