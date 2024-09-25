@@ -122,6 +122,7 @@ async function run() {
       }
       const result = await userCollection.updateOne(filter, updatedDoc)
       res.send(result)
+      console.log(result)
     })
 
     //menu related api
