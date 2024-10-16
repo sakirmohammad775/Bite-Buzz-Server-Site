@@ -146,6 +146,29 @@ async function run() {
       const result = await menuCollection.insertOne(item);
       res.send(result);
     })
+    app.patch('/menu/:id', verifyToken, verifyAdmin, async (req, res) => {
+      const item=req.body
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) }
+      const updatedDoc = {
+        $set:{
+          name:item.name,
+          price:item.price,
+          description:item.description,
+          image:item.image,
+          category:item.category,
+          recipe:item.recipe,
+
+          //add more fields as needed. For example, if you want to add a timestamp for when the item was added, add a "createdAt" field with the current timestamp using the MongoDB Date object.
+
+          // createdAt: new Date()
+        }
+      }
+      const result = await menuCollection.updateOne(filter, updatedDoc)
+      res.send(result)
+      console.log(result)
+    })
+
 
     app.delete('/menu/:id', verifyToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
